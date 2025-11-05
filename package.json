@@ -2,6 +2,7 @@
   "name": "yahtzee",
   "version": "1.0.0",
   "workspaces": [
+    "ssr",
     "client",
     "server"
   ],
