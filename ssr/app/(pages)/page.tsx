@@ -11,14 +11,15 @@ export default function Home() {
 
   useEffect(() => {
     if (player === undefined) {
-      router.push("/login")
+      router.push('/login')
     }
   }, [player])
 
   const [number_of_players, set_number_of_players] = useState(2)
 
-  const new_game = (player: string) => {
-    api.new_game(number_of_players, player)
+  const new_game = async (player: string) => {
+    const {id} = await api.new_game(number_of_players, player)
+    router.push(`/pending/${id}`)
   }
 
   return player && 
