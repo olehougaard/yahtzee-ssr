@@ -1,22 +1,23 @@
 'use client'
 
 import Link from 'next/link'
-// import type { State } from '../stores/store'
-// import type { PlayerState } from '../slices/player_slice'
-// import type { OngoingGamesState } from '../slices/ongoing_games_slice'
-// import type { PendingGamesState } from '../slices/pending_games_slice'
-// import * as _ from 'lodash/fp'
-// import { is_finished } from 'domain/src/model/yahtzee.game'
 
-export function Navigation({player}: {player: string}) {
-  // const ongoing_games = useSelector<State, OngoingGamesState>(state => state.ongoing_games)
-  // const pending_games = useSelector<State, PendingGamesState>(state => state.pending_games)
+import * as _ from 'lodash/fp'
+import { is_finished } from 'domain/src/model/yahtzee.game'
+import { IndexedYahtzee, IndexedYahtzeeSpecs } from '@/src/game'
 
-  // const is_participant = (g: {players: readonly string[]}) => g.players.some(_.isEqual(player))
+type Props = {
+  player: string
+  ongoing_games: Readonly<IndexedYahtzee>[]
+  pending_games: Readonly<IndexedYahtzeeSpecs>[]
+}
 
-  // const my_ongoing_games = ongoing_games.filter(is_participant).filter(_.negate(is_finished))
-  // const my_pending_games = pending_games.filter(is_participant)
-  // const other_pending_games = pending_games.filter(_.negate(is_participant))
+export function Navigation({player, ongoing_games, pending_games}: Props) {
+  const is_participant = (g: {players: readonly string[]}) => g.players.some(_.isEqual(player))
+
+  const my_ongoing_games = ongoing_games.filter(is_participant).filter(_.negate(is_finished))
+  const my_pending_games = pending_games.filter(is_participant)
+  const other_pending_games = pending_games.filter(_.negate(is_participant))
 
   return  <nav>
       <Link className='link' href="/">Lobby</Link>
@@ -25,15 +26,14 @@ export function Navigation({player}: {player: string}) {
 
       <h3>Ongoing</h3>
 
+      {my_ongoing_games.map(game => <Link className='link' href={`/game/${game.id}`} key={game.id}>Game #{game.id}</Link>)}
+
       <h3>Waiting for players</h3>
 
+      {my_pending_games.map(game => <Link className='link' href={`/pending/${game.id}`} key={game.id}>Game #{game.id}</Link>)}
+
       <h2>Available Games</h2>
-      {/* 
-      
-      {my_ongoing_games.map(game => <Link className='link' to={`/game/${game.id}`} key={game.id}>Game #{game.id}</Link>)}
-      
-      {my_pending_games.map(game => <Link className='link' to={`/pending/${game.id}`} key={game.id}>Game #{game.id}</Link>)}
-      
-      {other_pending_games.map(game => <Link className='link' to={`/pending/${game.id}`} key={game.id}>Game #{game.id}</Link>)} */}
+      {other_pending_games.map(game => <Link className='link' href={`/pending/${game.id}`} key={game.id}>Game #{game.id}</Link>)} 
+
     </nav>
 }
