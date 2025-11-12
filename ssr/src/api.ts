@@ -42,7 +42,7 @@ async function mutate(mutation: DocumentNode, variables?: object): Promise<unkno
   return result.data
 }  
 
-export async function gameRxJS() {
+export function gameRxJS() {
   const gameSubscriptionQuery = gql`subscription GameSubscription {
     active {
       id
@@ -61,7 +61,7 @@ export async function gameRxJS() {
   return subscriptionsRxJS(apolloClient, gameSubscriptionQuery, game)
 }
 
-export async function pendingRxJS() {
+export function pendingRxJS() {
   const gameSubscriptionQuery = gql`subscription GameSubscription {
     pending {
       id

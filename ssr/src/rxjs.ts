@@ -1,7 +1,7 @@
 import type { ApolloClient, DocumentNode } from "@apollo/client";
 import { Subject } from "rxjs";
 
-export async function subscriptionsRxJS<T, E, Key extends string, EventType extends Record<Key, E>>(apolloClient: ApolloClient, subscriptionQuery: DocumentNode, extractor: (evt: EventType) => T): Promise<Subject<T>> {
+export function subscriptionsRxJS<T, E, Key extends string, EventType extends Record<Key, E>>(apolloClient: ApolloClient, subscriptionQuery: DocumentNode, extractor: (evt: EventType) => T): Subject<T> {
   const subject = new Subject<T>();
   const apolloObservable = apolloClient.subscribe<EventType>({ query: subscriptionQuery })
   apolloObservable.subscribe({
