@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import * as api from '@/src/api'
 
 export default function Lobby({player}: {player:string}) {
-  // const {player} = useSelector<State, PlayerState>(state => state.player)
-  // const dispatch: Dispatch = useDispatch()
   const router = useRouter()
 
   useEffect(() => {
@@ -17,8 +16,7 @@ export default function Lobby({player}: {player:string}) {
   const [number_of_players, set_number_of_players] = useState(2)
 
   const new_game = (player: string) => {
-    // if (player !== undefined)
-    //   dispatch(NewGameThunk(number_of_players, player, navigate))
+    api.new_game(number_of_players, player)
   }
 
   return player && 
