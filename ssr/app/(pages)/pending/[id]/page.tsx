@@ -1,4 +1,3 @@
-import * as _ from 'lodash/fp'
 import Pending from "@/components/Pending"
 
 export default async ({params}: {params: Promise<{id: string}>}) => {
