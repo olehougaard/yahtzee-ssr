@@ -8,7 +8,6 @@ export default function Login({proceedTo}: {proceedTo: string}) {
   const router = useRouter()
 
   const [player, setPlayer] = useState('')
-  console.log(player)
 
   const enabled = player !== ''
 
