@@ -1,11 +1,11 @@
 import Login from "@/components/Login"
 
-export default async function loginPage({searchParams}: {searchParams: Promise<{pending?: string, game?: string}>}) {
-  const params = await searchParams
-  const proceedTo = (params.game !== undefined)?
-      `/game/${params.game}`:
-    (params.pending !== undefined)?
-      `/pending/${params.pending}`:
+export default async function loginPage() {
+  const spars = new URLSearchParams()
+  const proceedTo = (spars.get('game') !== null)?
+      `/game/${spars.get('game')}`:
+    (spars.get('pending') !== undefined)?
+      `/pending/${spars.get('pending')}`:
       '/'
 
   return <>
