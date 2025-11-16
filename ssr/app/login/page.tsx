@@ -9,7 +9,7 @@ export default async function loginPage() {
       '/'
 
   return <>
-    <h1>Login</h1>
+    <h2>Login</h2>
     <Login proceedTo={proceedTo}></Login>
   </>
 }

@@ -3,7 +3,7 @@
 import * as _ from 'lodash/fp'
 import { useEffect } from "react"
 import { useGlobalState } from "./StateProvider"
-import { useRouter } from "next/navigation"
+import { notFound, useRouter } from "next/navigation"
 import * as api from '@/src/api'
 
 export default function Pending({game_id}: {game_id:string}) {
@@ -11,6 +11,8 @@ export default function Pending({game_id}: {game_id:string}) {
   
   const { player, ongoing_games, pending_games } = useGlobalState()
   const game = pending_games.find(g => g.id === game_id)
+
+  if (!game) notFound()
 
   useEffect(() => {
     if (player === undefined) {

@@ -6,13 +6,15 @@ import { is_finished, scores } from "domain/src/model/yahtzee.game"
 import * as _ from 'lodash/fp'
 import { useEffect } from "react"
 import './Game.css'
-import { useRouter } from "next/navigation"
+import { notFound, useRouter } from "next/navigation"
 import { useGlobalState } from "./StateProvider"
 
 export default function Game({game_id}: { game_id: string }) {
   const { player, ongoing_games } = useGlobalState()
   const game = ongoing_games.find(_.matches({id: game_id}))
   const router = useRouter()
+
+  if (!game) notFound()
 
   useEffect(() => {
     if (player === undefined) {
