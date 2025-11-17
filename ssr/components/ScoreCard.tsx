@@ -32,6 +32,15 @@ const activeClass = (p: string) => p === player? 'activeplayer' : undefined
       api.register(game, key, player)
   }
 
+  function Cell({slotKey, player, score}: {slotKey: SlotKey, player: string, score?: number}) {
+    if (isActive(player) && score === undefined)
+      return <td className="clickable potential" onClick={() => register(slotKey)} key={player}>{displayScore(potentialScore(slotKey))}</td>
+    else if (isActive(player))
+      return <td className="activeplayer" key={player}>{displayScore(score)}</td>
+    else
+      return <td key={player}>{displayScore(score)}</td>
+  }
+
   return <div className={`${className} score`}>
       <table className="scorecard">
         <tbody>
@@ -40,11 +49,7 @@ const activeClass = (p: string) => p === player? 'activeplayer' : undefined
           {die_values.map(val => <tr key={val}>
             <td key='type'>{val}s</td>
             <td key='target'>{3 * val}</td>
-            {playerScores(val).map(({player, score}) => <>
-              {isActive(player) && score === undefined && <td className="clickable potential" onClick={() => register(val)} key={player}>{displayScore(potentialScore(val))}</td>}
-              {isActive(player) && score !== undefined && <td className="activeplayer" key={player}>{displayScore(score)}</td>}
-              {!isActive(player) && <td key={player}>{displayScore(score)}</td>}
-            </>)}
+            {playerScores(val).map(({player, score}) => <Cell slotKey={val} player={player} score={score}></Cell>)}
           </tr>)}
           <tr key='sum'>
             <td key='type'>Sum</td>
@@ -65,11 +70,7 @@ const activeClass = (p: string) => p === player? 'activeplayer' : undefined
           {lower_section_keys.map(key => <tr key={key}>
             <td key='type'>{key.charAt(0).toUpperCase() + key.slice(1)}</td>
             <td key='target'></td>
-            {playerScores(key).map(({player, score}) => <>
-              {isActive(player) && score === undefined && <td className="clickable potential" onClick={() => register(key)} key={player}>{displayScore(potentialScore(key))}</td>}
-              {isActive(player) && score !== undefined && <td className="activeplayer" key={player}>{displayScore(score)}</td>}
-              {!isActive(player) && <td key={player}>{displayScore(score)}</td>}
-            </>)}
+            {playerScores(key).map(({player, score}) => <Cell slotKey={key} player={player} score={score}></Cell>)}
           </tr>)}
           
           <tr key='total'>
