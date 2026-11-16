@@ -7,10 +7,13 @@ import * as _ from 'lodash/fp'
 import { useEffect } from "react"
 import './Game.css'
 import { notFound, useRouter } from "next/navigation"
-import { useGlobalState } from "./StateProvider"
+import { State } from "@/src/store"
+import { useSelector } from "react-redux"
 
 export default function Game({game_id}: { game_id: string }) {
-  const { player, ongoing_games } = useGlobalState()
+  const player = useSelector((s: State) => s.player).player
+  const ongoing_games = useSelector((s: State) => s.ongoing_games)
+
   const game = ongoing_games.find(_.matches({id: game_id}))
   const router = useRouter()
 

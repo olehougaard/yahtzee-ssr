@@ -1,19 +1,20 @@
 'use client'
 
-import { useGlobalState } from "@/components/StateProvider";
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import * as api from '@/src/api'
+import { useSelector } from "react-redux";
+import { State } from "@/src/store";
 
 export default function Home() {
-  const {player} = useGlobalState()
+  const playerState = useSelector((s: State) => s.player)
   const router = useRouter()
 
   useEffect(() => {
-    if (player === undefined) {
+    if (playerState.player === undefined) {
       router.push('/login')
     }
-  }, [player])
+  }, [playerState])
 
   const [number_of_players, set_number_of_players] = useState(2)
 
@@ -22,9 +23,9 @@ export default function Home() {
     router.push(`/pending/${id}`)
   }
 
-  return player && 
+  return playerState.player && 
     <main>
       Number of players: <input min="1" type="number" value={number_of_players} onChange={e => set_number_of_players(parseInt(e.target.value))}/>
-      <button onClick={() => new_game(player)}>New Game</button>
+      <button onClick={() => new_game(playerState.player!)}>New Game</button>
     </main>
 }

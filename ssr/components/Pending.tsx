@@ -2,17 +2,19 @@
 
 import * as _ from 'lodash/fp'
 import { useEffect } from "react"
-import { useGlobalState } from "./StateProvider"
 import { notFound, useRouter } from "next/navigation"
 import * as api from '@/src/api'
+import { useSelector } from 'react-redux'
+import { State } from '@/src/store'
 
 export default function Pending({game_id}: {game_id:string}) {
   const router = useRouter()
   
-  const { player, ongoing_games, pending_games } = useGlobalState()
-  const game = pending_games.find(g => g.id === game_id)
+  const player = (useSelector((s: State) => s.player)).player
+  const ongoing_games = useSelector((s: State) => s.ongoing_games)
+  const pending_games = useSelector((s: State) => s.pending_games)
 
-  if (!game) notFound()
+  const game = pending_games.find(g => g.id === game_id)
 
   useEffect(() => {
     if (player === undefined) {
@@ -24,16 +26,17 @@ export default function Pending({game_id}: {game_id:string}) {
         router.push('/')
     }
   })
-
+  
   if (player === undefined || game === undefined)
     return <></>
-
 
   const canJoin = game && player && !game.players.some(_.equals(player))
 
   const join = () => {
-    if (canJoin)
+    if (canJoin) {
       api.join(game, player)
+      router.push(`/game/${game_id}`)
+    }
   }
 
 return <>

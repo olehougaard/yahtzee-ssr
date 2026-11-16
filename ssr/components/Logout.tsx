@@ -2,15 +2,16 @@
 
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
-import { useGlobalState } from './StateProvider'
+import { useDispatch } from 'react-redux'
+import { player_slice } from '@/src/slices/player_slice'
 
 export function Logout() {
   const router = useRouter()
-  const { set_player } = useGlobalState()
+  const dispatch = useDispatch()
 
   const logout = () => {
     Cookies.remove('player')
-    set_player(undefined)
+    dispatch(player_slice.actions.logout())
     router.push('/')
   }
 

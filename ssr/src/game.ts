@@ -19,6 +19,10 @@ export type GraphQlGame = Readonly<{
   scores: {slot: string, score: number | null}[][]
 }>
 
+export function asSpec(game: IndexedYahtzee): IndexedYahtzeeSpecs {
+  return {...game, pending: true}
+}
+
 function findBonus(player_scores: { slot: string; score: number | null }[]) {
   const GraphQLbonus = player_scores.find(s => s.slot === 'bonus')?.score
   return GraphQLbonus === 50 ? 50 : GraphQLbonus === 0 ? 0 : undefined
